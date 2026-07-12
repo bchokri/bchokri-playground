@@ -25,10 +25,26 @@ metadata:
   name: wil-playground-service
   namespace: dev
 spec:
-  type: NodePort
-  selector:
-    app: wil-playground
   ports:
     - protocol: TCP
       port: 8888
       targetPort: 8888
+  selector:
+    app: wil-playground
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wil-playground-ingress
+  namespace: dev
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wil-playground-service
+            port:
+              number: 8888
